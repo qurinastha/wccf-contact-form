@@ -15,3 +15,25 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!!' );
  * Text Domain:       wccf-contact-form
  * Domain Path:       /languages
  */
+
+
+/*
+* Procedural Method
+*/
+add_action( 'admin_menu', 'wccf_admin_menu' );
+
+if ( !function_exists( 'wccf_admin_menu' ) ) {
+
+    function wccf_admin_menu() {
+        add_menu_page( 'WC Contact Form', 'WC Contact Form', 'manage_options', 'wccf-contact-form', 'wccf_settings_page', 'dashicons-email' );
+    }
+
+}
+
+if ( !function_exists( 'wccf_settings_page' ) ) {
+
+    function wccf_settings_page() {
+        echo "This is our plugin's main settings page";
+    }
+
+}
