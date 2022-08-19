@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!!' );
  * Plugin Name:       WC Contact Form
  * Plugin URI:        https://github.com/qurinastha/wccf-contact-form
  * Description:       A simple contact form plugin for the WordPress Plugin Development Workshop
- * Version:           1.0.0
+ * Version:           1.0.3
  * Requires at least: 5.2
  * Requires PHP:      5.0
  * Author:            Qurina Shrestha
