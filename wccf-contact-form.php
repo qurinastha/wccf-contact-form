@@ -34,7 +34,7 @@ if ( !class_exists( 'WCCF_Contact_Form' ) ) {
 
         function wccf_settings_page() {
 
-            echo "This is our plugin's main settings page";
+            include( plugin_dir_path( __FILE__ ) . 'includes/backend/settings.php' );
             
         }
 
