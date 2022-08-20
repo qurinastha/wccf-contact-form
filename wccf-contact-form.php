@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!!' );
  * Plugin Name:       WC Contact Form
  * Plugin URI:        https://github.com/qurinastha/wccf-contact-form
  * Description:       A simple contact form plugin for the WordPress Plugin Development Workshop
- * Version:           1.1.0
+ * Version:           2.0.0
  * Requires at least: 5.2
  * Requires PHP:      5.0
  * Author:            Qurina Shrestha
@@ -38,6 +38,10 @@ if ( !class_exists( 'WCCF_Contact_Form' ) ) {
             //enqueue front scripts
             add_action( 'wp_enqueue_scripts', array( $this, 'register_frontend_assets' ) );
 
+            //ajax call
+            add_action( 'wp_ajax_wccf_ajax_action', array( $this, 'process_form_ajax' ) );
+            add_action( 'wp_ajax_nopriv_wccf_ajax_action', array( $this, 'process_form_ajax' ) );
+
         }
 
 
@@ -46,7 +50,7 @@ if ( !class_exists( 'WCCF_Contact_Form' ) ) {
             defined( 'WCCF_PLUGINNAME' ) or define( 'WCCF_PLUGINNAME', 'WC Contact Form' );
             defined( 'WCCF_PATH' ) or define( 'WCCF_PATH', plugin_dir_path( __FILE__ ) );
             defined( 'WCCF_URL' ) or define( 'WCCF_URL', plugin_dir_url( __FILE__ ) );
-            defined( 'WCCF_VERSION' ) or define( 'WCCF_VERSION', '1.1.0' );
+            defined( 'WCCF_VERSION' ) or define( 'WCCF_VERSION', '2.0.0' );
 
         }
 
@@ -126,8 +130,60 @@ if ( !class_exists( 'WCCF_Contact_Form' ) ) {
 
         function register_frontend_assets(){
 
+           
+            $js_object = array( 'ajax_url' => admin_url( 'admin-ajax.php' ), 'ajax_nonce' => wp_create_nonce( 'wccf_ajax_nonce' ) );
+
             wp_enqueue_style( 'wccf-front-style', WCCF_URL . 'assets/css/wccf-frontend.css', array(), WCCF_VERSION );
             wp_enqueue_script( 'wccf-front-script', WCCF_URL . 'assets/js/wccf-frontend.js', array( 'jquery' ), WCCF_VERSION );
+
+            wp_localize_script( 'wccf-front-script', 'wccf_js_obj', $js_object );
+
+        }
+
+
+        function process_form_ajax(){
+
+            if ( !empty( $_POST['_wpnonce'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'wccf_ajax_nonce' ) ) {
+
+                $wccf_settings   = get_option( 'wccf_settings' );
+
+                $name_field     = sanitize_text_field( $_POST['name_field'] );
+                $email_field    = sanitize_text_field( $_POST['email_field'] );
+                $message_field  = sanitize_text_field( $_POST['message_field'] );
+                $email_html = 'Hello there, <br/>'
+                        . '<br/>'
+                        . 'Your have received an email from your site. Details below: <br/>'
+                        . '<br/>'
+                        . 'Name: ' . $name_field . '<br/>'
+                        . 'Email: ' . $email_field . '<br/>'
+                        . 'Message: ' . $message_field . '<br/>'
+                        . '<br/>'
+                        . 'Thank you';
+                $headers[]   = 'Content-Type: text/html; charset=UTF-8';
+                $headers[]   = 'No Reply<noreply@localhost.com>';
+                $subject     = 'New contact email received';
+                $admin_email = (!empty( $wccf_settings['admin_email'] )) ? $wccf_settings['admin_email'] : get_option( 'admin_email' );
+                
+                $mail_check  = wp_mail( $admin_email, $subject, $email_html, $headers );
+               
+                if ( $mail_check ) {
+                    $status = 200;
+                    $message = 'Email sent successfully.';
+                } else {
+                    $status = 403;
+                    $message = 'Email couldn\'t be sent due to local server. Please try on live server.';
+                }
+
+                $response['status'] = $status;
+                $response['message'] = $message;
+
+                die( json_encode( $response ) );
+
+            } else {
+
+                die( 'No script kiddies please!!' );
+
+            }
 
         }
 

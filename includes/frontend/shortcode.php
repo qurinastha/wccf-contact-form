@@ -3,7 +3,7 @@
 $wccf_settings = get_option( 'wccf_settings' );
 
 ?>
-<form class="wccf-form">
+<form class="wccf-form" method="post" action="">
     
     <div class="wccf-field-wrap">
         <label><?php echo (!empty( $wccf_settings['name_field_label'] )) ? esc_html( $wccf_settings['name_field_label'] ) : 'Your Name'; ?></label>
@@ -27,6 +27,10 @@ $wccf_settings = get_option( 'wccf_settings' );
         <label></label>
         <div class="wccf-field">
             <input type="submit" value="<?php echo (!empty( $wccf_settings['submit_button_label'] )) ? esc_html( $wccf_settings['submit_button_label'] ) : 'Save Settings'; ?>"/>
+            <img src="<?php echo WCCF_URL . 'assets/images/ajax-loader.gif'; ?>" class="wccf-ajax-loader" style="display:none;"/>
         </div>
     </div>
+
+    <div class="wccf-message-wrap" style="display: none;"></div>
+
 </form>
