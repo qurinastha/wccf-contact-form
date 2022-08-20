@@ -1,0 +1,27 @@
+.wccf-header h2 {
+    background: #063452;
+    color: #fff;
+    padding: 40px;
+    text-align: center;
+}
+.wccf-settings-wrap {
+    background: #fff;
+    padding: 10px;
+    min-height: 300px;
+}
+.wccf-field-wrap {
+    margin-bottom: 20px;
+}
+.wccf-field-wrap > label {
+    font-weight: 500;
+    display: inline-block;
+    width: 150px;
+    margin-right: 20px;
+}
+.wccf-field {
+    display: inline-block;
+}
+.wccf-field input[type="text"]{width:500px;}
+.wccf-settings-wrap form h3 {
+    padding: 20px 0;
+}
