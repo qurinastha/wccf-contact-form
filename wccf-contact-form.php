@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!!' );
  * Plugin Name:       WC Contact Form
  * Plugin URI:        https://github.com/qurinastha/wccf-contact-form
  * Description:       A simple contact form plugin for the WordPress Plugin Development Workshop
- * Version:           2.0.0
+ * Version:           2.0.1
  * Requires at least: 5.2
  * Requires PHP:      5.0
  * Author:            Qurina Shrestha
@@ -50,7 +50,7 @@ if ( !class_exists( 'WCCF_Contact_Form' ) ) {
             defined( 'WCCF_PLUGINNAME' ) or define( 'WCCF_PLUGINNAME', 'WC Contact Form' );
             defined( 'WCCF_PATH' ) or define( 'WCCF_PATH', plugin_dir_path( __FILE__ ) );
             defined( 'WCCF_URL' ) or define( 'WCCF_URL', plugin_dir_url( __FILE__ ) );
-            defined( 'WCCF_VERSION' ) or define( 'WCCF_VERSION', '2.0.0' );
+            defined( 'WCCF_VERSION' ) or define( 'WCCF_VERSION', '2.0.1' );
 
         }
 
@@ -117,6 +117,11 @@ if ( !class_exists( 'WCCF_Contact_Form' ) ) {
 
             ob_start();
 
+            $wccf_fields = $this->wccf_generate_contact_form_fields();
+            $wccf_fields = $this->sortOrderByPriority( $wccf_fields );
+
+            $wccf_settings = get_option( 'wccf_settings' );
+
             include(WCCF_PATH . 'includes/frontend/shortcode.php');
 
             $form_html = ob_get_contents();
@@ -124,6 +129,59 @@ if ( !class_exists( 'WCCF_Contact_Form' ) ) {
             ob_end_clean();
 
             return $form_html;
+        }
+
+        function wccf_generate_contact_form_fields( $fields = array() ){
+
+            $fields['name'] = array(
+                'id'     => 'wccf_name_field',
+                'label'  => __('Name','wccf-contact-form'),
+                'input_class'  => array('form-control'),
+                'wrapper_class'  => array('form-wrap'),
+                'placeholder' => __('FullName','wccf-contact-form'),
+                'type' => 'text',
+                'priority' => 10,
+                'default' => '',
+                'sanitize_callback' => 'sanitize_text_field'
+            );
+
+            $fields['email'] = array(
+                'id'     => 'wccf_email_field',
+                'label'  => __('Email Address','wccf-contact-form'),
+                'input_class'  => array('form-control'),
+                'wrapper_class'  => array('form-wrap'),
+                'placeholder' => __('Email Address','wccf-contact-form'),
+                'type' => 'email',
+                'priority' => 20,
+                'default' => '',
+                'sanitize_callback' => 'sanitize_text_field'
+            );
+
+            $fields['message'] = array(
+                'id'     => 'wccf_msg_field',
+                'label'  => __('Message','wccf-contact-form'),
+                'input_class'  => array('form-control'),
+                'wrapper_class'  => array('form-wrap'),
+                'placeholder' => __('Your Message here','wccf-contact-form'),
+                'type' => 'textarea',
+                'priority' => 30,
+                'default' => '',
+                'sanitize_callback' => 'sanitize_text_field'
+            );
+            
+            
+            $fields = apply_filters( 'wccf_contact_fields' , $fields );
+
+            return $fields;
+        }  
+
+
+        function sortOrderByPriority( $fields ){
+
+            $keys = array_column($fields, 'priority');
+            array_multisort($keys, SORT_ASC, $fields);
+
+            return $fields;
 
         }
 
@@ -145,33 +203,70 @@ if ( !class_exists( 'WCCF_Contact_Form' ) ) {
 
             if ( !empty( $_POST['_wpnonce'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'wccf_ajax_nonce' ) ) {
 
-                $wccf_settings   = get_option( 'wccf_settings' );
+                $wccf_settings = get_option( 'wccf_settings' );
 
-                $name_field     = sanitize_text_field( $_POST['name_field'] );
-                $email_field    = sanitize_text_field( $_POST['email_field'] );
-                $message_field  = sanitize_text_field( $_POST['message_field'] );
+                $param = array();
+                $sanitized_param = array();
+
+                /*
+                * Data received from form serialize 
+                * Data - wcf_form_nonce_field=9ad443a86b&_wp_http_referer=index.php..&phone=9931107914....
+                */
+	            parse_str( $_POST['data'], $param ); //Parses the string into variables
+
+                //serialize each data
+                foreach( $param as $p =>  $value){
+
+                    if( $p == 'wccf_form_nonce_field' || $p == '_wp_http_referer') continue;
+
+                    if(is_email( $value )){
+                        $sanitized_param[ $p ] = sanitize_email( $value );
+                    }else{
+                        $sanitized_param[ $p ] = sanitize_text_field( $value );
+                    }
+
+                }
+                
                 $email_html = 'Hello there, <br/>'
                         . '<br/>'
                         . 'Your have received an email from your site. Details below: <br/>'
-                        . '<br/>'
-                        . 'Name: ' . $name_field . '<br/>'
-                        . 'Email: ' . $email_field . '<br/>'
-                        . 'Message: ' . $message_field . '<br/>'
-                        . '<br/>'
-                        . 'Thank you';
-                $headers[]   = 'Content-Type: text/html; charset=UTF-8';
-                $headers[]   = 'No Reply<noreply@localhost.com>';
-                $subject     = 'New contact email received';
-                $admin_email = (!empty( $wccf_settings['admin_email'] )) ? $wccf_settings['admin_email'] : get_option( 'admin_email' );
-                
-                $mail_check  = wp_mail( $admin_email, $subject, $email_html, $headers );
+                        . '<br/>';
                
+                 if( !empty( $sanitized_param ) ):
+
+                    foreach( $sanitized_param as $fieldKey => $fieldVal):
+
+                    $email_html .=    $fieldKey.': ' . $fieldVal . '<br/>';
+
+                    endforeach;
+
+                endif;
+
+                $email_html .=  '<br/>'
+                        . 'Thank you';
+
+                $headers[] = 'Content-Type: text/html; charset=UTF-8';
+
+                $headers[] = 'No Reply<noreply@localhost.com>';
+
+                $subject = 'New contact email received';
+                
+                $admin_email = (!empty( $wccf_settings['admin_email'] )) ? $wccf_settings['admin_email'] : get_option( 'admin_email' );
+
+                $mail_check = wp_mail( $admin_email, $subject, $email_html, $headers );
+
                 if ( $mail_check ) {
+
                     $status = 200;
-                    $message = 'Email sent successfully.';
+
+                    $message = __('Email sent successfully.');
+
                 } else {
+
                     $status = 403;
-                    $message = 'Email couldn\'t be sent due to local server. Please try on live server.';
+
+                    $message = __("Email couldn't be sent. Please try again later.");
+
                 }
 
                 $response['status'] = $status;
