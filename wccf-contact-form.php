@@ -104,7 +104,7 @@ if ( !class_exists( 'WCCF_Contact_Form' ) ) {
 
         /*
         * ShortCode API Integration
-        * Use shortcode [wcf_contact_form]
+        * Use shortcode [wccf_contact_form]
         * */
         function generate_contact_form_html(){
 
