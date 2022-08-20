@@ -26,6 +26,8 @@ if ( !empty( $wccf_settings ) ) {
         <form method="post" action="<?php echo admin_url( 'admin-post.php' ); ?>">
 
              <input type="hidden" name="action" value="wccf_settings_save_action"/>
+             
+             <?php wp_nonce_field( 'wccf_settings_nonce', 'wccf_settings_nonce_field' ); ?>
 
             <h3>Field Settings</h3>
 
