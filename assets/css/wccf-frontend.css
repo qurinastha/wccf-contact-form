@@ -1,0 +1,20 @@
+form.wccf-form {
+    padding: 20px;
+    box-shadow: 0 0 2px #aaa;
+}
+.wccf-field-wrap {
+    margin-bottom: 20px;
+}
+.wccf-message-wrap {
+    font-size: 16px;
+    border: 1px solid #aaa;
+    padding: 8px;
+    margin-bottom: 25px;
+    background: #eee;
+    font-style: italic;
+}
+.wccf-ajax-loader{display:inline-block;}
+
+input[type="text"], input[type="email"], input[type="url"], input[type="password"], input[type="search"], input[type="number"], input[type="tel"], input[type="range"], input[type="date"], input[type="month"], input[type="week"], input[type="time"], input[type="datetime"], input[type="datetime-local"], input[type="color"] {
+    width: 100%;
+}

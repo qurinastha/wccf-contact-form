@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!!' );
  * Plugin Name:       WC Contact Form
  * Plugin URI:        https://github.com/qurinastha/wccf-contact-form
  * Description:       A simple contact form plugin for the WordPress Plugin Development Workshop
- * Version:           1.0.9
+ * Version:           1.1.0
  * Requires at least: 5.2
  * Requires PHP:      5.0
  * Author:            Qurina Shrestha
@@ -35,6 +35,9 @@ if ( !class_exists( 'WCCF_Contact_Form' ) ) {
             //Display Shortcode API
             add_shortcode( 'wccf_contact_form', array( $this, 'generate_contact_form_html' ) );
 
+            //enqueue front scripts
+            add_action( 'wp_enqueue_scripts', array( $this, 'register_frontend_assets' ) );
+
         }
 
 
@@ -43,7 +46,7 @@ if ( !class_exists( 'WCCF_Contact_Form' ) ) {
             defined( 'WCCF_PLUGINNAME' ) or define( 'WCCF_PLUGINNAME', 'WC Contact Form' );
             defined( 'WCCF_PATH' ) or define( 'WCCF_PATH', plugin_dir_path( __FILE__ ) );
             defined( 'WCCF_URL' ) or define( 'WCCF_URL', plugin_dir_url( __FILE__ ) );
-            defined( 'WCCF_VERSION' ) or define( 'WCCF_VERSION', '1.0.9' );
+            defined( 'WCCF_VERSION' ) or define( 'WCCF_VERSION', '1.1.0' );
 
         }
 
@@ -104,7 +107,7 @@ if ( !class_exists( 'WCCF_Contact_Form' ) ) {
 
         /*
         * ShortCode API Integration
-        * Use shortcode [wcf_contact_form]
+        * Use shortcode [wccf_contact_form]
         * */
         function generate_contact_form_html(){
 
@@ -117,6 +120,14 @@ if ( !class_exists( 'WCCF_Contact_Form' ) ) {
             ob_end_clean();
 
             return $form_html;
+
+        }
+
+
+        function register_frontend_assets(){
+
+            wp_enqueue_style( 'wccf-front-style', WCCF_URL . 'assets/css/wccf-frontend.css', array(), WCCF_VERSION );
+            wp_enqueue_script( 'wccf-front-script', WCCF_URL . 'assets/js/wccf-frontend.js', array( 'jquery' ), WCCF_VERSION );
 
         }
 
