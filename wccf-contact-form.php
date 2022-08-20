@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!!' );
  * Plugin Name:       WC Contact Form
  * Plugin URI:        https://github.com/qurinastha/wccf-contact-form
  * Description:       A simple contact form plugin for the WordPress Plugin Development Workshop
- * Version:           2.0.1
+ * Version:           2.0.2
  * Requires at least: 5.2
  * Requires PHP:      5.0
  * Author:            Qurina Shrestha
@@ -50,7 +50,7 @@ if ( !class_exists( 'WCCF_Contact_Form' ) ) {
             defined( 'WCCF_PLUGINNAME' ) or define( 'WCCF_PLUGINNAME', 'WC Contact Form' );
             defined( 'WCCF_PATH' ) or define( 'WCCF_PATH', plugin_dir_path( __FILE__ ) );
             defined( 'WCCF_URL' ) or define( 'WCCF_URL', plugin_dir_url( __FILE__ ) );
-            defined( 'WCCF_VERSION' ) or define( 'WCCF_VERSION', '2.0.1' );
+            defined( 'WCCF_VERSION' ) or define( 'WCCF_VERSION', '2.0.2' );
 
         }
 
@@ -259,13 +259,13 @@ if ( !class_exists( 'WCCF_Contact_Form' ) ) {
 
                     $status = 200;
 
-                    $message = __('Email sent successfully.');
+                    $message = __('Email sent successfully.','wccf-contact-form');
 
                 } else {
 
                     $status = 403;
 
-                    $message = __("Email couldn't be sent. Please try again later.");
+                    $message = __("Email couldn't be sent. Please try again later.",'wccf-contact-form');
 
                 }
 

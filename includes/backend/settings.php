@@ -6,7 +6,7 @@ if ( !empty( $wccf_settings ) ) {
 ?>
 <div class="wrap">
      <div class="wccf-header">
-         <h2><?php echo WCCF_PLUGINNAME;?> Settings</h2>
+         <h2><?php echo WCCF_PLUGINNAME;?> <?php esc_html_e( 'Settings', 'wccf-contact-form' ); ?></h2>
      </div>
      <?php
         if ( !empty( $_GET['message'] ) && $_GET['message'] == 1 ) {
@@ -29,49 +29,49 @@ if ( !empty( $wccf_settings ) ) {
              
              <?php wp_nonce_field( 'wccf_settings_nonce', 'wccf_settings_nonce_field' ); ?>
 
-            <h3>Field Settings</h3>
+            <h3><?php esc_html_e( 'Field Settings', 'wccf-contact-form' ); ?></h3>
 
             <div class="wccf-field-wrap">
-                <label>Name Field Label</label>
+                <label><?php esc_html_e( 'Name Field Label', 'wccf-contact-form' ); ?></label>
                 <div class="wccf-field">
-                    <input type="text" name="name_field_label" placeholder="Fill label for name here" value="<?php echo (!empty( $wccf_settings['name_field_label'] )) ? esc_attr($wccf_settings['name_field_label']) : ''; ?>"/>
+                    <input type="text" name="name_field_label" placeholder="<?php esc_html_e( 'Fill label for name here', 'wccf-contact-form' ); ?>" value="<?php echo (!empty( $wccf_settings['name_field_label'] )) ? esc_attr($wccf_settings['name_field_label']) : ''; ?>"/>
                 </div>
             </div>
 
             <div class="wccf-field-wrap">
-                <label>Email Field Label</label>
+                <label><?php esc_html_e( 'Email Field Label', 'wccf-contact-form' ); ?></label>
                 <div class="wccf-field">
-                    <input type="text" name="email_field_label" placeholder="Fill label for email here" value="<?php echo (!empty( $wccf_settings['email_field_label'] )) ? esc_attr($wccf_settings['email_field_label']) : ''; ?>"/>
+                    <input type="text" name="email_field_label" placeholder="<?php esc_html_e( 'Fill label for email here', 'wccf-contact-form' ); ?>" value="<?php echo (!empty( $wccf_settings['email_field_label'] )) ? esc_attr($wccf_settings['email_field_label']) : ''; ?>"/>
                 </div>
             </div>
 
             <div class="wccf-field-wrap">
-                <label>Message Field Label</label>
+                <label><?php esc_html_e( 'Message Field Label', 'wccf-contact-form' ); ?></label>
                 <div class="wccf-field">
-                    <input type="text" name="message_field_label" placeholder="Fill label for message here" value="<?php echo (!empty( $wccf_settings['message_field_label'] )) ? esc_attr($wccf_settings['message_field_label']) : ''; ?>"/>
+                    <input type="text" name="message_field_label" placeholder="<?php esc_html_e( 'Fill label for message here', 'wccf-contact-form' ); ?>" value="<?php echo (!empty( $wccf_settings['message_field_label'] )) ? esc_attr($wccf_settings['message_field_label']) : ''; ?>"/>
                 </div>
             </div>
 
             <div class="wccf-field-wrap">
-                <label>Submit Button Label</label>
+                <label><?php esc_html_e( 'Submit Button Label', 'wccf-contact-form' ); ?></label>
                 <div class="wccf-field">
-                    <input type="text" name="submit_button_label" placeholder="Fill label for submit button here" value="<?php echo (!empty( $wccf_settings['submit_button_label'] )) ? esc_attr($wccf_settings['submit_button_label']) : ''; ?>"/>
+                    <input type="text" name="submit_button_label" placeholder="<?php esc_html_e( 'Fill label for submit button here', 'wccf-contact-form' ); ?>" value="<?php echo (!empty( $wccf_settings['submit_button_label'] )) ? esc_attr($wccf_settings['submit_button_label']) : ''; ?>"/>
                 </div>
             </div>
 
-            <h3>Additional Settings</h3>
+            <h3><?php esc_html_e( 'Additional Settings', 'wccf-contact-form' ); ?></h3>
 
             <div class="wccf-field-wrap">
-                <label>Admin Email</label>
+                <label><?php esc_html_e( 'Admin Email', 'wccf-contact-form' ); ?></label>
                 <div class="wccf-field">
-                    <input type="email" name="admin_email" placeholder="Fill custom email here" value="<?php echo (!empty( $wccf_settings['admin_email'] )) ? esc_attr($wccf_settings['admin_email']) : ''; ?>"/>
+                    <input type="email" name="admin_email" placeholder="<?php esc_html_e( 'Fill custom email here', 'wccf-contact-form' ); ?>" value="<?php echo (!empty( $wccf_settings['admin_email'] )) ? esc_attr($wccf_settings['admin_email']) : ''; ?>"/>
                 </div>
             </div>
 
             <div class="wccf-field-wrap">
                 <label></label>
                 <div class="wccf-field">
-                    <input type="submit" class="btn button-primary" value="Save Settings"/>
+                    <input type="submit" class="btn button-primary" value="<?php esc_html_e( 'Save Settings', 'wccf-contact-form' ); ?>"/>
                 </div>
             </div>
         </form>
