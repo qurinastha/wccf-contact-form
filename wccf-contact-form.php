@@ -42,6 +42,11 @@ if ( !class_exists( 'WCCF_Contact_Form' ) ) {
             add_action( 'wp_ajax_wccf_ajax_action', array( $this, 'process_form_ajax' ) );
             add_action( 'wp_ajax_nopriv_wccf_ajax_action', array( $this, 'process_form_ajax' ) );
 
+             /**
+             * Translation
+             */
+            add_action( 'plugins_loaded', array( $this, 'register_plugin_textdomain' ) );
+
         }
 
 
@@ -280,6 +285,11 @@ if ( !class_exists( 'WCCF_Contact_Form' ) ) {
 
             }
 
+        }
+
+
+        function register_plugin_textdomain() {
+            load_plugin_textdomain( 'wccf-contact-form', false, basename( dirname( __FILE__ ) ) . '/languages' );
         }
 
 
