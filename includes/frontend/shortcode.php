@@ -8,19 +8,19 @@ $wccf_settings = get_option( 'wccf_settings' );
     <div class="wccf-field-wrap">
         <label><?php echo (!empty( $wccf_settings['name_field_label'] )) ? esc_html( $wccf_settings['name_field_label'] ) : 'Your Name'; ?></label>
         <div class="wccf-field">
-            <input type="text" name="name_field"/>
+            <input type="text" name="name_field" class="wccf-name-field"/>
         </div>
     </div>
     <div class="wccf-field-wrap">
         <label><?php echo (!empty( $wccf_settings['email_field_label'] )) ? esc_html( $wccf_settings['email_field_label'] ) : 'Your email'; ?></label>
         <div class="wccf-field">
-            <input type="text" name="email_field"/>
+            <input type="text" name="email_field" class="wccf-email-field"/>
         </div>
     </div>
     <div class="wccf-field-wrap">
         <label><?php echo (!empty( $wccf_settings['message_field_label'] )) ? esc_html( $wccf_settings['message_field_label'] ) : 'Your message'; ?></label>
         <div class="wccf-field">
-            <textarea name="message"></textarea>
+            <textarea name="message" class="wccf-message-field"></textarea>
         </div>
     </div>
     <div class="wccf-field-wrap">
