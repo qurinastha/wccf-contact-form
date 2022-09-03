@@ -16,10 +16,6 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!!' );
  * Domain Path:       /languages
  */
 
-
-/*
-* Procedural Method
-*/
 add_action( 'admin_menu', 'wccf_admin_menu' );
 
 if ( !function_exists( 'wccf_admin_menu' ) ) {
